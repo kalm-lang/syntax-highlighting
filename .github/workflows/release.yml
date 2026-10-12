@@ -1,0 +1,99 @@
+name: Release syntax highlighting
+on:
+  push:
+    tags: ['v*.*.*']
+  workflow_dispatch:
+    inputs:
+      version:
+        description: Optional X.Y.Z version; empty uses package.json
+        required: false
+        type: string
+      status:
+        description: Release status
+        required: false
+        type: string
+        default: final
+permissions:
+  contents: write
+  packages: write
+concurrency:
+  group: syntax-highlighting-release
+  cancel-in-progress: false
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: https://npm.pkg.github.com
+          scope: '@kalm-lang'
+      - run: npm ci --ignore-scripts --no-audit --no-fund --fetch-retries=0
+      - name: Resolve release version
+        id: release
+        env:
+          EVENT_NAME: ${{ github.event_name }}
+          INPUT_VERSION: ${{ inputs.version }}
+          INPUT_STATUS: ${{ inputs.status }}
+          TAG_NAME: ${{ github.ref_name }}
+        run: node scripts/resolve-release-version.mjs >> "$GITHUB_OUTPUT"
+      - name: Reject existing publication
+        env:
+          GH_TOKEN: ${{ github.token }}
+          NODE_AUTH_TOKEN: ${{ github.token }}
+          KALM_PACKAGES_READ_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+        shell: bash
+        run: |
+          if output=$(gh release view "$RELEASE_TAG" 2>&1); then
+            echo "Release exists" >&2; exit 1
+          elif [[ "$output" != *"HTTP 404"* && "$output" != *"release not found"* ]]; then
+            printf '%s\n' "$output" >&2; exit 1
+          fi
+          if [[ "$GITHUB_EVENT_NAME" == workflow_dispatch ]]; then
+            if output=$(git ls-remote --exit-code --tags origin "refs/tags/$RELEASE_TAG" 2>&1); then
+              echo "Tag exists" >&2; exit 1
+            else
+              status=$?; [[ $status == 2 ]] || { printf '%s\n' "$output" >&2; exit "$status"; }
+            fi
+          fi
+          if output=$(npm view "@kalm-lang/syntax-highlighting@$RELEASE_VERSION" version --fetch-retries=0 2>&1); then
+            echo "Package exists" >&2; exit 1
+          elif [[ "$output" != *E404* && "$output" != *"404 Not Found"* ]]; then
+            printf '%s\n' "$output" >&2; exit 1
+          fi
+      - name: Prepare and check package
+        run: |
+          npm pkg set version="${{ steps.release.outputs.version }}"
+          npm test
+          npm run check
+          npm pack --dry-run
+      - name: Publish syntax highlighting package
+        env:
+          KALM_PACKAGES_READ_TOKEN: ${{ github.token }}
+          NODE_AUTH_TOKEN: ${{ github.token }}
+        run: npm publish --registry=https://npm.pkg.github.com
+      - name: Create manual release tag
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git tag "${{ steps.release.outputs.tag }}" "$GITHUB_SHA"
+          git push origin "${{ steps.release.outputs.tag }}"
+      - name: Create release without attached assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          RELEASE_VERSION: ${{ steps.release.outputs.version }}
+          PRERELEASE: ${{ steps.release.outputs.prerelease }}
+        shell: bash
+        run: |
+          flags=(); [[ "$PRERELEASE" != true ]] || flags+=(--prerelease)
+          gh release create "$RELEASE_TAG" --verify-tag "${flags[@]}" \
+            --title "Kalm syntax highlighting $RELEASE_VERSION" \
+            --notes "Use @kalm-lang/syntax-highlighting@$RELEASE_VERSION from GitHub Packages, or browse the grammar and API at this tag."

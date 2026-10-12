@@ -1,0 +1,49 @@
+{
+  "name": "@kalm-lang/syntax-highlighting",
+  "version": "0.1.0",
+  "description": "Shared Kalm TextMate grammar and Node/browser syntax highlighting",
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.18.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kalm-lang/syntax-highlighting.git"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.d.mts",
+      "import": "./src/index.mjs"
+    },
+    "./grammar": "./grammars/kalm.tmLanguage.json",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src/",
+    "grammars/",
+    "README.md",
+    "LICENSE",
+    "PROVENANCE.md"
+  ],
+  "scripts": {
+    "test": "node --test tests/*.test.mjs",
+    "check": "tsc --noEmit -p tests/tsconfig.json",
+    "test:browser": "node tests/browser.mjs",
+    "prepack": "npm test && npm run check"
+  },
+  "dependencies": {
+    "shiki": "4.5.0",
+    "@shikijs/langs": "4.5.0",
+    "@shikijs/themes": "4.5.0"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.63.0",
+    "typescript": "7.0.2",
+    "vite": "8.3.2",
+    "@types/node": "26.6.4"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
