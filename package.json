@@ -1,6 +1,6 @@
 {
   "name": "@kalm-lang/syntax-highlighting",
-  "version": "0.1.0",
+  "version": "1.2.0",
   "description": "Shared Kalm TextMate grammar and Node/browser syntax highlighting",
   "type": "module",
   "license": "MIT",
@@ -17,7 +17,8 @@
       "import": "./src/index.mjs"
     },
     "./grammar": "./grammars/kalm.tmLanguage.json",
-    "./package.json": "./package.json"
+    "./package.json": "./package.json",
+    "./grammar/legacy": "./grammars/kalm-legacy.tmLanguage.json"
   },
   "files": [
     "src/",

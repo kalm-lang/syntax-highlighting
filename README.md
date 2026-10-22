@@ -1,9 +1,9 @@
 # Kalm syntax highlighting
 
-The shared TextMate grammar and Shiki renderer for the website, specification PDFs, VS Code, and future browser tools. Package releases use independent package versions; the initial rules preserve the existing Kalm 1.1 highlighting, including historical spellings. This package does not validate programs or implement the 1.2 draft.
+The shared TextMate grammar and Shiki renderer for the website, specification PDFs, VS Code, and future browser tools. The default grammar follows Kalm 1.2.0. Historical specifications can select `createKalmHighlighter({ edition: "legacy" })`; the raw historical grammar is exported as `./grammar/legacy`. Highlighting does not validate programs.
 
 ```sh
-npm install @kalm-lang/syntax-highlighting@0.1.0
+npm install @kalm-lang/syntax-highlighting@1.2.0
 ```
 
 Consumers use GitHub's npm registry. Configure `@kalm-lang:registry=https://npm.pkg.github.com` and `//npm.pkg.github.com/:_authToken=${KALM_PACKAGES_READ_TOKEN}` in `.npmrc`. Set the environment variable to a token with `read:packages` and access to this package. Never commit a token. Node 20.18+ is supported; repository checks use Node 22+.

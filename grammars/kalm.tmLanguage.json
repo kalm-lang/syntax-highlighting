@@ -22,6 +22,9 @@
       "include": "#declaration"
     },
     {
+      "include": "#contextual-call"
+    },
+    {
       "include": "#keywords"
     },
     {
@@ -202,11 +205,11 @@
     },
     "keywords": {
       "name": "keyword.control.kalm",
-      "match": "\\b(?:space|use|pub|internal|private|protected|class|contract|fun|var|fix|impl|inherits|base|needs|closed|extendable|singleton|data|choice|alias|given|generate|augment|read|write|lazy|late|constant|forward|choose|when|if|elif|else|while|for|in|next|stop|return|self|with|defer|async|await|task|guard|try|handle|finally|raise|expect|require|ensure|external|bridge|annotation|target|legacy|test|before|after|init|override|as|is|and|or|not)\\b"
+      "match": "\\b(?:space|use|pub|internal|private|protected|class|contract|fun|var|fix|implements|inherits|base|needs|closed|extendable|singleton|data|choice|alias|given|generate|augment|read|write|lazy|late|constant|forward|match|case|yield|if|elif|else|while|for|in|next|stop|return|self|super|with|defer|async|await|task|guard|try|handle|finally|raise|expect|require|ensure|external|bridge|annotation|target|legacy|test|before|after|init|override|as|is|and|or|not)\\b"
     },
     "builtin-types": {
       "name": "support.type.kalm",
-      "match": "\\b(?:Unit|Any|Bool|Byte|Short|Int|Long|Float|Double|Char|Text|Array|BoolArray|ByteArray|ShortArray|IntArray|LongArray|FloatArray|DoubleArray|CharArray|List|Map|Task)\\b"
+      "match": "\\b(?:void|boolean|byte|short|int|long|float|double|char|Unit|Any|Bool|Byte|Short|Int|Long|Float|Double|Char|Text|Array|BoolArray|ByteArray|ShortArray|IntArray|LongArray|FloatArray|DoubleArray|CharArray|List|Map|Task)\\b"
     },
     "class-names": {
       "name": "support.type.kalm",
@@ -222,7 +225,7 @@
     },
     "operators": {
       "name": "keyword.operator.kalm",
-      "match": "(?:\\?\\?=|\\?\\?|\\?\\.|\\?\\[|=>|->|==|!=|<=|>=|&&|\\|\\||[=+*/%<>.!-])"
+      "match": "(?:as\\?|!!|\\?\\?=|\\?\\?|\\?\\.|\\?\\[|=>|->|==|!=|<=|>=|&&|\\|\\||[?:=+*/%<>.!-])"
     },
     "annotation": {
       "match": "(@)([\\p{L}_][\\p{L}\\p{N}_]*(?:\\.[\\p{L}_][\\p{L}\\p{N}_]*)*)",
@@ -234,6 +237,10 @@
           "name": "storage.type.annotation.kalm"
         }
       }
+    },
+    "contextual-call": {
+      "name": "entity.name.function.call.kalm",
+      "match": "(?<=\\.)(?:not|await|test|match|and|or|fixed|implements|case)\\b|\\b(?:not|await|test|match|and|or|fixed|implements|case)(?=\\s*\\()"
     }
   }
 }

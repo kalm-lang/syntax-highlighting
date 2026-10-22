@@ -3,6 +3,22 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { createKalmHighlighter, kalmGrammar, resolveLanguage, themes } from '@kalm-lang/syntax-highlighting';
 
+test('1.2 vocabulary and legacy highlighting remain separately selectable', async () => {
+  assert.match(kalmGrammar.repository.keywords.match, /implements/);
+  assert.match(kalmGrammar.repository.keywords.match, /match\|case\|yield/);
+  assert.doesNotMatch(kalmGrammar.repository.keywords.match, /\|choose\||\|when\||\|impl\|/);
+  const current = await createKalmHighlighter();
+  const legacy = await createKalmHighlighter({ edition: 'legacy' });
+  try {
+    const source = 'fix value: int = input as? Text; value!!; match value { case _ => 1; }';
+    const tokens = current.codeToTokens(source, { lang: 'kalm', theme: themes.light }).tokens;
+    assert.equal(tokens.flat().map(token => token.content).join(''), source);
+    assert.notEqual(current.codeToHtml('choose value', { lang: 'kalm', theme: themes.light }),
+      legacy.codeToHtml('choose value', { lang: 'kalm', theme: themes.light }));
+  } finally { current.dispose(); legacy.dispose(); }
+  await assert.rejects(createKalmHighlighter({ edition: 'unsupported' }), RangeError);
+});
+
 test('raw grammar works in CommonJS and keeps the editor scope', () => {
   const grammar = createRequire(import.meta.url)('@kalm-lang/syntax-highlighting/grammar');
   assert.deepEqual(grammar, kalmGrammar);
