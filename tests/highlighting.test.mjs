@@ -5,7 +5,6 @@ import { createKalmHighlighter, kalmGrammar, resolveLanguage, themes } from '@ka
 
 test('1.2 vocabulary and legacy highlighting remain separately selectable', async () => {
   assert.match(kalmGrammar.repository.keywords.match, /implements/);
-  assert.equal(kalmGrammar.repository['interpolated-string'].patterns[0].match, '\\$\\$');
   assert.match(kalmGrammar.repository.keywords.match, /match\|case\|yield/);
   assert.doesNotMatch(kalmGrammar.repository.keywords.match, /\|choose\||\|when\||\|impl\|/);
   const current = await createKalmHighlighter();
@@ -14,6 +13,11 @@ test('1.2 vocabulary and legacy highlighting remain separately selectable', asyn
     const source = 'fix value: int = input as? Text; value!!; match value { case _ => 1; }';
     const tokens = current.codeToTokens(source, { lang: 'kalm', theme: themes.light }).tokens;
     assert.equal(tokens.flat().map(token => token.content).join(''), source);
+    const dollars = current.codeToTokens('@"$${name}"', { lang: 'kalm', theme: themes.light, includeExplanation: true }).tokens.flat();
+    assert.ok(dollars.some(token => token.content.includes('$$') && token.explanation?.some(part =>
+      part.scopes.some(scope => scope.scopeName === 'constant.character.escape.kalm'))));
+    assert.ok(!dollars.some(token => token.explanation?.some(part =>
+      part.scopes.some(scope => scope.scopeName.includes('interpolat')))));
     assert.notEqual(current.codeToHtml('choose value', { lang: 'kalm', theme: themes.light }),
       legacy.codeToHtml('choose value', { lang: 'kalm', theme: themes.light }));
   } finally { current.dispose(); legacy.dispose(); }
