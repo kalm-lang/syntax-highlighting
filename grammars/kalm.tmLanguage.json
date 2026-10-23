@@ -209,7 +209,7 @@
     },
     "keywords": {
       "name": "keyword.control.kalm",
-      "match": "\\b(?:space|use|pub|internal|private|protected|class|contract|fun|var|fix|implements|inherits|base|needs|closed|extendable|singleton|data|choice|alias|given|generate|augment|read|write|lazy|late|constant|forward|match|case|yield|if|elif|else|while|for|in|next|stop|return|self|super|with|defer|async|await|task|guard|try|handle|finally|raise|expect|require|ensure|external|bridge|annotation|target|legacy|test|before|after|init|override|as|is|and|or|not)\\b"
+      "match": "\\b(?:space|use|pub|internal|private|protected|class|contract|fun|var|fix|implements|inherits|base|needs|closed|extendable|singleton|data|choice|alias|given|generate|augment|read|write|lazy|late|constant|forward|match|case|yield|if|elif|else|while|for|in|next|stop|return|self|super|with|defer|async|await|task|guard|try|handle|finally|raise|expect|require|ensure|external|bridge|annotation|target|legacy|test|before|after|init|override|as(?!\\?)|is|and|or|not)\\b"
     },
     "builtin-types": {
       "name": "support.type.kalm",
@@ -229,7 +229,7 @@
     },
     "operators": {
       "name": "keyword.operator.kalm",
-      "match": "(?:as\\?|!!|\\?\\?=|\\?\\?|\\?\\.|\\?\\[|=>|->|==|!=|<=|>=|&&|\\|\\||[?:=+*/%<>.!-])"
+      "match": "(?:\\bas\\?|!!|\\?\\?=|\\?\\?|\\?\\.|\\?\\[|=>|->|==|!=|<=|>=|&&|\\|\\||[?:=+*/%<>.!-])"
     },
     "annotation": {
       "match": "(@)([\\p{L}_][\\p{L}\\p{Nd}_]*(?:\\.[\\p{L}_][\\p{L}\\p{Nd}_]*)*)",
