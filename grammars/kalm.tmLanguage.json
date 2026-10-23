@@ -81,11 +81,15 @@
       "patterns": [
         {
           "name": "constant.character.escape.kalm",
-          "match": "\\\\[nrt\\\\\"$]"
+          "match": "\\$\\$"
+        },
+        {
+          "name": "constant.character.escape.kalm",
+          "match": "\\\\[nrt\\\\\"]"
         },
         {
           "name": "variable.other.interpolated.kalm",
-          "match": "\\$[\\p{L}_][\\p{L}\\p{N}_]*"
+          "match": "\\$[\\p{L}_][\\p{L}\\p{Nd}_]*"
         },
         {
           "name": "meta.interpolation.kalm",
@@ -107,7 +111,7 @@
             },
             {
               "name": "variable.other.kalm",
-              "match": "\\b[\\p{L}_][\\p{L}\\p{N}_]*\\b"
+              "match": "\\b[\\p{L}_][\\p{L}\\p{Nd}_]*\\b"
             }
           ]
         }
@@ -141,7 +145,7 @@
     "declaration": {
       "patterns": [
         {
-          "match": "\\b(pub)\\s+(fun)\\s+([\\p{L}_][\\p{L}\\p{N}_]*)",
+          "match": "\\b(pub)\\s+(fun)\\s+([\\p{L}_][\\p{L}\\p{Nd}_]*)",
           "captures": {
             "1": {
               "name": "storage.modifier.kalm"
@@ -155,7 +159,7 @@
           }
         },
         {
-          "match": "\\b(fun)\\s+([\\p{L}_][\\p{L}\\p{N}_]*)",
+          "match": "\\b(fun)\\s+([\\p{L}_][\\p{L}\\p{Nd}_]*)",
           "captures": {
             "1": {
               "name": "storage.type.function.kalm"
@@ -166,7 +170,7 @@
           }
         },
         {
-          "match": "\\b(pub)\\s+(class)\\s+([\\p{L}_][\\p{L}\\p{N}_]*)",
+          "match": "\\b(pub)\\s+(class)\\s+([\\p{L}_][\\p{L}\\p{Nd}_]*)",
           "captures": {
             "1": {
               "name": "storage.modifier.kalm"
@@ -180,7 +184,7 @@
           }
         },
         {
-          "match": "\\b(class|contract|data|choice|singleton|annotation|alias)\\s+([\\p{L}_][\\p{L}\\p{N}_]*)",
+          "match": "\\b(class|contract|data|choice|singleton|annotation|alias)\\s+([\\p{L}_][\\p{L}\\p{Nd}_]*)",
           "captures": {
             "1": {
               "name": "storage.type.class.kalm"
@@ -191,7 +195,7 @@
           }
         },
         {
-          "match": "\\b(class)\\s+([\\p{L}_][\\p{L}\\p{N}_]*)",
+          "match": "\\b(class)\\s+([\\p{L}_][\\p{L}\\p{Nd}_]*)",
           "captures": {
             "1": {
               "name": "storage.type.class.kalm"
@@ -213,7 +217,7 @@
     },
     "class-names": {
       "name": "support.type.kalm",
-      "match": "\\b[\\p{Lu}][\\p{L}\\p{N}_]*\\b"
+      "match": "\\b[\\p{Lu}][\\p{L}\\p{Nd}_]*\\b"
     },
     "constants": {
       "name": "constant.language.kalm",
@@ -221,14 +225,14 @@
     },
     "function-call": {
       "name": "entity.name.function.call.kalm",
-      "match": "\\b[\\p{L}_][\\p{L}\\p{N}_]*(?=\\s*\\()"
+      "match": "\\b[\\p{L}_][\\p{L}\\p{Nd}_]*(?=\\s*\\()"
     },
     "operators": {
       "name": "keyword.operator.kalm",
       "match": "(?:as\\?|!!|\\?\\?=|\\?\\?|\\?\\.|\\?\\[|=>|->|==|!=|<=|>=|&&|\\|\\||[?:=+*/%<>.!-])"
     },
     "annotation": {
-      "match": "(@)([\\p{L}_][\\p{L}\\p{N}_]*(?:\\.[\\p{L}_][\\p{L}\\p{N}_]*)*)",
+      "match": "(@)([\\p{L}_][\\p{L}\\p{Nd}_]*(?:\\.[\\p{L}_][\\p{L}\\p{Nd}_]*)*)",
       "captures": {
         "1": {
           "name": "punctuation.definition.annotation.kalm"

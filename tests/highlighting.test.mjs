@@ -5,6 +5,7 @@ import { createKalmHighlighter, kalmGrammar, resolveLanguage, themes } from '@ka
 
 test('1.2 vocabulary and legacy highlighting remain separately selectable', async () => {
   assert.match(kalmGrammar.repository.keywords.match, /implements/);
+  assert.equal(kalmGrammar.repository['interpolated-string'].patterns[0].match, '\\$\\$');
   assert.match(kalmGrammar.repository.keywords.match, /match\|case\|yield/);
   assert.doesNotMatch(kalmGrammar.repository.keywords.match, /\|choose\||\|when\||\|impl\|/);
   const current = await createKalmHighlighter();
