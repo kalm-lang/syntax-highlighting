@@ -33,15 +33,15 @@
     "prepack": "npm test && npm run check"
   },
   "dependencies": {
-    "shiki": "4.5.0",
-    "@shikijs/langs": "4.5.0",
-    "@shikijs/themes": "4.5.0"
+    "shiki": "4.6.0",
+    "@shikijs/langs": "4.6.0",
+    "@shikijs/themes": "4.6.0"
   },
   "devDependencies": {
-    "@playwright/test": "1.64.1",
+    "@playwright/test": "1.65.0",
     "typescript": "7.0.2",
-    "vite": "8.3.5",
-    "@types/node": "26.6.5"
+    "vite": "8.3.6",
+    "@types/node": "26.6.6"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
